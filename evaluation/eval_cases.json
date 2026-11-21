@@ -1,0 +1,35 @@
+{
+  "project": "accessible-client-kanban-stage1",
+  "cases": [
+    {
+      "id": "eval_01_five_column_invariant",
+      "description": "Default board initializes with exactly 5 fixed columns.",
+      "expected_columns": ["Backlog", "To Do", "In Progress", "Review", "Done"],
+      "expected_column_count": 5
+    },
+    {
+      "id": "eval_02_contiguous_positions_after_moves",
+      "description": "Drag-and-drop and keyboard moves preserve contiguous 0..n-1 positions in source and target columns.",
+      "operations": ["add_card", "move_card", "keyboard_move_card"],
+      "invariant": "contiguous_zero_indexed_positions"
+    },
+    {
+      "id": "eval_03_orphan_free_deletion",
+      "description": "Deleting a card removes it from state.cards and all column.card_ids lists.",
+      "operations": ["add_card", "delete_card"],
+      "invariant": "no_orphan_card_ids"
+    },
+    {
+      "id": "eval_04_empty_column_rename_rejected",
+      "description": "Renaming a column to empty or whitespace-only text raises ValueError.",
+      "invalid_titles": ["", "   ", "\t\n"],
+      "expected_error": "ValueError"
+    },
+    {
+      "id": "eval_05_stateless_refresh_reset",
+      "description": "Browser refresh reset discards transient mutations and restores the clean 5-column default board.",
+      "operations": ["add_card", "rename_column", "refresh_reset"],
+      "expected_card_count": 0
+    }
+  ]
+}
